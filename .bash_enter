@@ -1,0 +1,64 @@
+########################################################################
+# This is a smartcd script.  Commands you type will be run when you
+# enter this directory.  The string __PATH__ will be replaced with
+# the current path.  Some examples are editing your $PATH or creating
+# a temporary alias:
+#
+#     autostash PATH=__PATH__/bin:$PATH
+#     autostash alias restart="service stop; sleep 1; service start"
+#
+# See http://smartcd.org for more ideas about what can be put here
+#######################################################################
+if [ -z "$BASH_ENTER_ALIAS_ONLY" ]; then
+  autostash export COMPOSE_PROJECT_DIR=$PWD
+
+  # Define DOCKER_DEVBOX_ENV to customize environment configuration files
+  autostash export DOCKER_DEVBOX_ENV="${DOCKER_DEVBOX_ENV:-prod}"
+
+  if [ -f "docker-compose.override.$DOCKER_DEVBOX_ENV.yml" ]; then
+    ln -rfs "docker-compose.override.$DOCKER_DEVBOX_ENV.yml" "docker-compose.override.yml"
+  fi
+fi
+
+autostash export USER_ID=$(id -u)
+autostash export GROUP_ID=$(id -g)
+autostash export USER_NAME=$(id -un)
+autostash export GROUP_NAME=$(id -gn)
+
+_docker_devbox_map_workdir() {
+  CONTAINER_PROJECT_DIR="$1"
+
+  RELATIVE_PATH="${PWD/$COMPOSE_PROJECT_DIR/}"
+  CONTAINER_PWD="$CONTAINER_PROJECT_DIR$RELATIVE_PATH"
+  echo $CONTAINER_PWD
+}
+
+# Commands aliases are automatically generated from functions following this pattern
+# _alias_[ALIAS]() { [COMMAND] $@;}
+
+_alias_dc() { docker-compose $@;}
+_alias_run() { docker-compose run --rm $@;}
+
+ALIAS_FUNCTIONS=$(declare -F | sed -r 's/^declare -f //' | awk -F= '/^_?alias_/{print $1 }')
+if [ -z "$BASH_ENTER_ALIAS_ONLY" ]; then echo "Commands: "; fi
+for func in $ALIAS_FUNCTIONS; do
+  autostash alias $(sed -r 's/^_?alias_//' <<< "$func")="$func"
+  if [ -z "$BASH_ENTER_ALIAS_ONLY" ]; then echo " - $(sed -r 's/^_?alias_//' <<< "$func")"; fi
+done
+
+if [ -f "./init/init.sh" ] && [ ! -f ./init/.initialized ] && [ -z "$BASH_ENTER_ALIAS_ONLY" ]; then
+  read -p "Project is not initialized. Do you want to initialize it ? [y/N]: " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+      echo "Running initialization script: ./init/init.sh"
+      ./init/init.sh
+      if [ $? -eq 0 ]; then
+        echo "Initialization succeded"
+      else
+        echo "Initialization failed"
+      fi
+  else
+      echo "Initialization skipped"
+  fi
+fi

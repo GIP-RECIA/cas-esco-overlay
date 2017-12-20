@@ -1,0 +1,17 @@
+{
+  "@class" : "org.apereo.cas.services.OidcRegisteredService",
+  "clientId": "jwt",
+  "clientSecret": "jwt",
+  "generateRefreshToken": true,
+  "serviceId" : "^.*",
+  "name": "OIDC-Poc",
+  "id": 1000,
+  "scopes": [ "java.util.HashSet", ["openid" ,"profile", "email", "address", "phone", "offline_access", "esco"]],
+  "properties" : {
+    "@class" : "java.util.HashMap",
+    "jwtAsServiceTicket" : {
+      "@class" : "org.apereo.cas.services.DefaultRegisteredServiceProperty",
+      "values" : [ "java.util.HashSet", [ "true" ] ]
+    }
+  }
+}

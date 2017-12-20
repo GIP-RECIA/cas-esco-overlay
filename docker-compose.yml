@@ -1,0 +1,21 @@
+version: "2"
+services:
+  tomcat:
+    build:
+      context: .docker/tomcat
+      args:
+        - GROUP_ID=${GROUP_ID}
+        - USER_ID=${USER_ID}
+    ports:
+      - 11080:11080
+    volumes:
+      - "./cas/target/cas.war:/usr/local/tomcat/webapps/cas.war:ro"
+      # - "./cas-management/target/cas-management.war:/usr/local/tomcat/webapps/cas-management.war:ro"
+      - "./config/etc/cas:/etc/cas"
+#  db:
+#    image: postgres:9.6
+#    environment:
+#      - POSTGRES_PASSWORD=cas
+#      - POSTGRES_USER=cas
+#    ports:
+#      - "11432:5432"
