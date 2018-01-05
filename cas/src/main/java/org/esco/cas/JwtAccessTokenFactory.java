@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 
 /**
- * JWT OAuth access token factory.
+ * OAuth JWT Access Token factory.
  */
 public class JwtAccessTokenFactory extends JwtBaseTokenFactory implements AccessTokenFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtAccessTokenFactory.class);

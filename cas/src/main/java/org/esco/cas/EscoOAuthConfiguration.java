@@ -12,6 +12,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * OAUth configuration that implements JWT for Access and Refresh tokens.
+ */
 @Configuration
 public class EscoOAuthConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(EscoOAuthConfiguration.class);

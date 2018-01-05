@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * JWT OAuth access token factory.
+ * Base class for OAuth JWT Token factories.
  */
 public abstract class JwtBaseTokenFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtBaseTokenFactory.class);
