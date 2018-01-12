@@ -1,8 +1,0 @@
-{
-  "@class" : "org.apereo.cas.services.RegexRegisteredService",
-  "serviceId" : "http://localhost:11080/cas-management/.*",
-  "name" : "CASManagementService",
-  "id" : 132457456798678,
-  "description" : "Service entry to allow access to the CAS Management App",
-  "evaluationOrder" : 10
-}
